@@ -1,6 +1,5 @@
 
 
-
 import requests
 import cv2
 import os
@@ -8,20 +7,18 @@ import numpy as np
 import argparse
 from genderize import Genderize  # Make sure to install this package: pip install Genderize
 
-# ======== Unipile API Configuration ========
-ACCOUNT_ID = ""
-API_KEY = ""
+# Base URL for the Unipile API
 BASE_URL = "https://api10.unipile.com:14058/api/v1/users/"
 
-def get_linkedin_profile(identifier):
+def get_linkedin_profile(identifier, account_id, api_key):
     """
     Calls the Unipile API to fetch the LinkedIn user profile.
     The request URL includes account_id as a query parameter.
     """
-    url = f"{BASE_URL}{identifier}?account_id={ACCOUNT_ID}"
+    url = f"{BASE_URL}{identifier}?account_id={account_id}"
     headers = {
         "accept": "application/json",
-        "X-API-KEY": API_KEY
+        "X-API-KEY": api_key
     }
     response = requests.get(url, headers=headers)
 
@@ -44,7 +41,7 @@ def download_image(image_url, save_path):
     return save_path
 
 # ======== Import functions and variables from detect.py ========
-# Ensure that the main detection logic in detect.py is protected by "if __name__ == '__main__'" 
+# Ensure that the main detection logic in detect.py is protected by "if __name__ == '__main__'"
 from detect import highlightFace, faceNet, ageNet, genderNet, MODEL_MEAN_VALUES, ageList, genderList
 
 def detect_gender_age(image):
@@ -86,12 +83,16 @@ def detect_gender_age(image):
     return results
 
 def main():
-    parser = argparse.ArgumentParser(description="Fetch LinkedIn user profile via Unipile API and perform gender and age detection.")
+    parser = argparse.ArgumentParser(
+        description="Fetch LinkedIn user profile via Unipile API and perform gender and age detection."
+    )
     parser.add_argument("identifier", help="LinkedIn user's name or id")
+    parser.add_argument("account_id", help="Your Unipile account ID")
+    parser.add_argument("api_key", help="Your Unipile API key")
     args = parser.parse_args()
 
     # Fetch the user profile via Unipile API
-    profile = get_linkedin_profile(args.identifier)
+    profile = get_linkedin_profile(args.identifier, args.account_id, args.api_key)
     if not profile:
         print("Failed to fetch user profile.")
         return
