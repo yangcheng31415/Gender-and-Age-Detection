@@ -9,8 +9,8 @@ import argparse
 from genderize import Genderize  # Make sure to install this package: pip install Genderize
 
 # ======== Unipile API Configuration ========
-ACCOUNT_ID = "Lo5B0ViTQRiE3zMXFQrukw"
-API_KEY = "U19t8Uav.EpK8ar8DR5eWRVqGwmQKCW1Ixg6oTWllTpRKpUsmL9A="
+ACCOUNT_ID = ""
+API_KEY = ""
 BASE_URL = "https://api10.unipile.com:14058/api/v1/users/"
 
 def get_linkedin_profile(identifier):
